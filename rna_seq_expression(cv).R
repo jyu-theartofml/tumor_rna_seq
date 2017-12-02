@@ -5,7 +5,7 @@ library(caret)
 library(nsprcomp)
 library(xgboost)
 
-########### Load data ##############
+########################### Load data ##############
 raw.data<-fread('data.csv')
 label<-fread('labels.csv')
 target<-label$Class
@@ -15,7 +15,7 @@ raw.data$V1<-NULL
 raw.data<-data.frame(raw.data)
 df<-raw.data[,-(which(colSums(raw.data) == 0))]
 
-###### visualize the PCA plot on whole dataset
+############ visualize the PCA plot on whole dataset ##############
 pca<-nsprcomp(df, k=c(1000,1000,1000,1000,1000,1000,1000,1000,1000,1000))
 df_out <- as.data.frame(pca$x)
 df_out$group <- label$Class
@@ -28,15 +28,13 @@ p <- plot_ly(df_out, x = ~PC1, y = ~PC2, z = ~PC3, color = ~group) %>%
                       yaxis = list(title = 'PC2'),
                       zaxis = list(title = 'PC3')))
 p
-
-########### perform PCA on training data#################
-
+########### perform PCA on training data for predictive modeling #################
 
 cv_folds <- createFolds(target, k=5)
 val_split<-lapply(cv_folds, function(ind, dat) dat[ind,], dat=df)
 train_split<-lapply(cv_folds, function(ind, dat) dat[-ind,], dat=df)
 #for 5 CV and 5 classes F1 scores
-f1_val=matrix(NA, nrow=5, ncol=5)
+f1_val<-matrix(NA, nrow=5, ncol=5)
 
 for (i in 1:length(cv_folds)){
   group<-names(cv_folds)[i]
@@ -72,9 +70,3 @@ for (i in 1:length(cv_folds)){
 }
   
 f1_val
-
-
-
-
-
-

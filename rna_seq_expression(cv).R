@@ -60,7 +60,7 @@ for (i in 1:length(cv_folds)){
   dval.sparse<-xgb.DMatrix(data = as.matrix(val.spc), label = as.numeric(val.target))
   watchlist <- list(train=dtrain.sparse, test=dval.sparse)
   xgb.model <- xgb.train(data=dtrain.sparse, max_depth=2, eta=0.001, nthread = 2,colsample_bytree=0.5, nrounds=150, verbose=F,
-                         watchlist=watchlist,num_class=5, early_stopping_rounds=3,objective = "multi:softmax", eval_metric="mlogloss")
+                         watchlist=watchlist,num_class=5, early_stopping_rounds=3,objective = "multi:softmax", eval_metric="merrors")
   
   prob<-predict(xgb.model,dval.sparse)
   # sebastian raschka:What we are trying to achieve with the F1-score metric is to find an equal balance between precision and recall, which is extremely useful in most scenarios when we are working with imbalanced datasets (i.e., a dataset with a non-uniform distribution of class labels).

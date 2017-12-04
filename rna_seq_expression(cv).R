@@ -59,7 +59,7 @@ for (i in 1:length(cv_folds)){
   dtrain.sparse<-xgb.DMatrix(data = as.matrix(train.spc), label =as.numeric(train.target))
   dval.sparse<-xgb.DMatrix(data = as.matrix(val.spc), label = as.numeric(val.target))
   watchlist <- list(train=dtrain.sparse, test=dval.sparse)
-  xgb.model <- xgb.train(data=dtrain.sparse, max_depth=2, eta=0.001, nthread = 2,colsample_bytree=0.5, nrounds=150, verbose=F,
+  xgb.model <- xgb.train(data=dtrain.sparse, max_depth=2, eta=0.0001, nthread = 2,colsample_bytree=0.3, nrounds=150, verbose=F,
                          watchlist=watchlist,num_class=5, early_stopping_rounds=3,objective = "multi:softmax", eval_metric="merrors")
   
   prob<-predict(xgb.model,dval.sparse)

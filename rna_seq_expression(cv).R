@@ -68,4 +68,6 @@ for (i in 1:length(cv_folds)){
   f1_val[i,]<-as.vector(g$byClass[,7])
 }
   
-f1_val
+colnames(f1_val) <- c("BRCA","COAD", "KIRC",'LUAD','PRAD')
+rownames(f1_val)<-c("CV1","CV2", "CV3",'CV4','CV5')
+as.table(f1_val)
